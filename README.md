@@ -68,10 +68,21 @@ A modern, browser-based icon generator that converts JPEG images into 48×48 pix
 
 ```
 Icon Maker/
-├── index.html          # Main application (single-file)
-├── README.md           # This file
-└── LICENSE             # MIT License
+├── index.html              # Main application (single-file)
+├── README.md               # This file
+├── LICENSE                 # MIT License
+├── BEGINNER_GUIDE.md       # Complete beginner's tutorial
+├── CODE_WALKTHROUGH.md     # Detailed code explanation
+└── QUICK_REFERENCE.md      # Cheat sheet for common tasks
 ```
+
+## Documentation for Beginners
+
+New to programming? Check out these guides:
+
+- **[BEGINNER_GUIDE.md](BEGINNER_GUIDE.md)** - Start here! Explains HTML, CSS, and JavaScript fundamentals with examples from this project.
+- **[CODE_WALKTHROUGH.md](CODE_WALKTHROUGH.md)** - Line-by-line explanation of how the code works.
+- **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Quick reference for common tasks and code snippets.
 
 ## Development
 
