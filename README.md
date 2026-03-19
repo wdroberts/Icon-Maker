@@ -71,18 +71,47 @@ Icon Maker/
 ├── index.html              # Main application (single-file)
 ├── README.md               # This file
 ├── LICENSE                 # MIT License
-├── BEGINNER_GUIDE.md       # Complete beginner's tutorial
-├── CODE_WALKTHROUGH.md     # Detailed code explanation
-└── QUICK_REFERENCE.md      # Cheat sheet for common tasks
+│
+└── Documentation/
+    ├── BEGINNER_GUIDE.md       # Complete beginner's tutorial
+    ├── VISUAL_GUIDE.md         # Diagrams and visual explanations
+    ├── CODE_WALKTHROUGH.md     # Detailed code explanation
+    └── QUICK_REFERENCE.md      # Cheat sheet for common tasks
 ```
 
 ## Documentation for Beginners
 
-New to programming? Check out these guides:
+New to programming? We've created comprehensive documentation to help you learn:
 
-- **[BEGINNER_GUIDE.md](BEGINNER_GUIDE.md)** - Start here! Explains HTML, CSS, and JavaScript fundamentals with examples from this project.
-- **[CODE_WALKTHROUGH.md](CODE_WALKTHROUGH.md)** - Line-by-line explanation of how the code works.
-- **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Quick reference for common tasks and code snippets.
+### Learning Path
+
+1. **[BEGINNER_GUIDE.md](BEGINNER_GUIDE.md)** - **Start here!** Complete tutorial covering:
+   - How web applications work (HTML, CSS, JavaScript)
+   - Understanding the code structure
+   - Step-by-step explanation of each part
+   - Making your first modifications
+   - Common questions answered
+
+2. **[VISUAL_GUIDE.md](VISUAL_GUIDE.md)** - Visual learner? Check this out:
+   - Flowcharts and diagrams
+   - Visual representation of fit modes
+   - Canvas coordinate system explained
+   - State machine diagrams
+   - Binary file structure visualized
+
+3. **[CODE_WALKTHROUGH.md](CODE_WALKTHROUGH.md)** - Detailed technical reference:
+   - Line-by-line code explanation
+   - Deep dive into image processing
+   - ICO file format details
+   - Performance considerations
+   - Debugging tips
+
+4. **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Handy cheat sheet:
+   - HTML/CSS/JavaScript syntax
+   - Canvas API reference
+   - Common modification recipes
+   - Debugging commands
+   - Helpful code snippets
 
 ## Development
 
