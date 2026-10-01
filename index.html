@@ -398,9 +398,9 @@
       <div class="control-group">
         <span class="control-label">Export format</span>
         <div class="format-options">
-          <button class="format-btn active" data-fmt="png">PNG</button>
+          <button class="format-btn" data-fmt="png">PNG</button>
           <button class="format-btn" data-fmt="jpeg">JPEG</button>
-          <button class="format-btn" data-fmt="ico">ICO</button>
+          <button class="format-btn active" data-fmt="ico">ICO</button>
         </div>
       </div>
     </div>
@@ -433,7 +433,7 @@
 
   let currentImage = null;
   let fitMode      = 'cover';
-  let exportFormat = 'png';
+  let exportFormat = 'ico';
   let bgColorVal   = '#ffffff';
 
   // ── Input validation helper ───────────────────────────────────────────────
@@ -581,62 +581,34 @@
   });
 
   function downloadAsIco() {
-    const imgData    = iconCanvas.getContext('2d').getImageData(0, 0, SIZE, SIZE);
-    const pixels     = imgData.data;
-    const bmpHeaderSize = 40;
-    const pixelDataSize = SIZE * SIZE * 4;
-    const imageSize  = bmpHeaderSize + pixelDataSize;
-    const fileSize   = 6 + 16 + imageSize;
+    // ICO container holding a PNG-encoded image (supported by Windows Vista+).
+    iconCanvas.toBlob(async pngBlob => {
+      if (!pngBlob) { setStatus('Could not encode icon.', 'err'); return; }
+      const png = new Uint8Array(await pngBlob.arrayBuffer());
+      const buf  = new ArrayBuffer(6 + 16 + png.length);
+      const view = new DataView(buf);
+      // ICONDIR
+      view.setUint16(0, 0, true);
+      view.setUint16(2, 1, true);   // type: icon
+      view.setUint16(4, 1, true);   // one image
+      // ICONDIRENTRY
+      view.setUint8(6, SIZE > 255 ? 0 : SIZE);
+      view.setUint8(7, SIZE > 255 ? 0 : SIZE);
+      view.setUint8(8, 0);
+      view.setUint8(9, 0);
+      view.setUint16(10, 1, true);
+      view.setUint16(12, 32, true);
+      view.setUint32(14, png.length, true);
+      view.setUint32(18, 22, true);
+      new Uint8Array(buf, 22).set(png);
 
-    const buf  = new ArrayBuffer(fileSize);
-    const view = new DataView(buf);
-    let off = 0;
-
-    // ICONDIR
-    view.setUint16(off, 0, true); off += 2;
-    view.setUint16(off, 1, true); off += 2;
-    view.setUint16(off, 1, true); off += 2;
-
-    // ICONDIRENTRY
-    view.setUint8(off, SIZE > 255 ? 0 : SIZE); off++;   // width  (0 = 256 in spec, fine for 124)
-    view.setUint8(off, SIZE > 255 ? 0 : SIZE); off++;   // height
-    view.setUint8(off, 0); off++;
-    view.setUint8(off, 0); off++;
-    view.setUint16(off, 1,         true); off += 2;
-    view.setUint16(off, 32,        true); off += 2;
-    view.setUint32(off, imageSize, true); off += 4;
-    view.setUint32(off, 6 + 16,   true); off += 4;
-
-    // BITMAPINFOHEADER
-    view.setUint32(off, 40,             true); off += 4;
-    view.setInt32 (off, SIZE,           true); off += 4;
-    view.setInt32 (off, SIZE * 2,       true); off += 4;  // height * 2 includes AND mask
-    view.setUint16(off, 1,              true); off += 2;
-    view.setUint16(off, 32,             true); off += 2;
-    view.setUint32(off, 0,              true); off += 4;
-    view.setUint32(off, pixelDataSize,  true); off += 4;
-    view.setInt32 (off, 0,              true); off += 4;
-    view.setInt32 (off, 0,              true); off += 4;
-    view.setUint32(off, 0,              true); off += 4;
-    view.setUint32(off, 0,              true); off += 4;
-
-    // Pixel data: bottom-up, BGRA
-    for (let row = SIZE - 1; row >= 0; row--) {
-      for (let col = 0; col < SIZE; col++) {
-        const i = (row * SIZE + col) * 4;
-        view.setUint8(off++, pixels[i + 2]); // B
-        view.setUint8(off++, pixels[i + 1]); // G
-        view.setUint8(off++, pixels[i + 0]); // R
-        view.setUint8(off++, pixels[i + 3]); // A
-      }
-    }
-
-    const blob = new Blob([buf], { type: 'image/x-icon' });
-    const link = document.createElement('a');
-    link.download = `icon_${SIZE}x${SIZE}.ico`;
-    link.href = URL.createObjectURL(blob);
-    link.click();
-    setStatus('ICO downloaded!', 'ok');
+      const blob = new Blob([buf], { type: 'image/x-icon' });
+      const link = document.createElement('a');
+      link.download = `icon_${SIZE}x${SIZE}.ico`;
+      link.href = URL.createObjectURL(blob);
+      link.click();
+      setStatus('ICO downloaded!', 'ok');
+    }, 'image/png');
   }
 
   // ── Reset ─────────────────────────────────────────────────────────────────
